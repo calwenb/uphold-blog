@@ -9,10 +9,10 @@
         <relativePath/>
     </parent>
     <groupId>com.calwen</groupId>
-    <artifactId>springboot-template</artifactId>
+    <artifactId>uphold_blog</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>springboot-template</name>
-    <description>springboot-template</description>
+    <name>uphold_blog</name>
+    <description>uphold_blog</description>
     <properties>
         <java.version>1.8</java.version>
     </properties>
