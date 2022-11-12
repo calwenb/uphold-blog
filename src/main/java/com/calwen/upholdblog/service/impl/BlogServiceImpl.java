@@ -1,11 +1,15 @@
 package com.calwen.upholdblog.service.impl;
 
 import java.util.Date;
+import java.util.Objects;
 
 import com.calwen.upholdblog.entity.BlogEntity;
+import com.calwen.upholdblog.entity.UserEntity;
+import com.calwen.upholdblog.exception.OauthException;
 import com.calwen.upholdblog.request.blog.BlogQueryRequest;
 import com.calwen.upholdblog.request.blog.BlogRequest;
 import com.calwen.upholdblog.service.BlogService;
+import com.calwen.upholdblog.service.UserService;
 import com.calwen.upholdblog.vo.BlogVO;
 import com.wen.releasedao.core.mapper.BaseMapper;
 import com.wen.releasedao.core.vo.PageRequest;
@@ -25,6 +29,8 @@ import javax.annotation.Resource;
 public class BlogServiceImpl implements BlogService {
     @Resource
     BaseMapper baseMapper;
+    @Resource
+    UserService userService;
 
     @Override
     public BlogEntity get(Integer id) {
@@ -49,6 +55,7 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public Boolean save(BlogRequest request) {
+//        this.verify(request.getId(), request.getUserId());
         BlogEntity entity = new BlogEntity();
         BeanUtils.copyProperties(request, entity);
         entity.setColumnId(0);
@@ -60,14 +67,28 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public Boolean del(Integer id) {
+    public Boolean del(Integer id, Integer userId) {
+        this.verify(id,userId);
         return baseMapper.deleteById(BlogEntity.class, id);
     }
 
     @Override
     public Boolean update(BlogRequest request) {
+        this.verify(request.getId(), request.getUserId());
         BlogEntity entity = new BlogEntity();
         return baseMapper.save(entity);
+    }
+
+    /**
+     * 权限校验
+     */
+    private void verify(Integer id, Integer userId) {
+        BlogEntity blog = this.get(id);
+        UserEntity user = userService.get(userId);
+        if (Objects.equals(blog.getUserId(), user.getId())) {
+            return;
+        }
+        throw new OauthException("无权操作");
     }
 
 }

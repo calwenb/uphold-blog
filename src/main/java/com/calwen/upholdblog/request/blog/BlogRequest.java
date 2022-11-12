@@ -8,6 +8,7 @@ import lombok.Data;
  */
 @Data
 public class BlogRequest {
+    private Integer id;
     private String title;
     private Integer userId;
     private String columnName;

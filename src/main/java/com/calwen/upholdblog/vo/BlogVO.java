@@ -22,6 +22,7 @@ public class BlogVO {
     private Integer like;
     private Boolean open;
     private String content;
+    private String preview="阅览下";
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

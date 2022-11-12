@@ -1,6 +1,7 @@
 package com.calwen.upholdblog.entity;
 
 import com.wen.releasedao.core.annotation.*;
+import com.wen.releasedao.core.enums.IdTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.Date;
 @NoArgsConstructor
 @TableName("blog")
 public class BlogEntity {
+    @ColumnId(idType = IdTypeEnum.AUTO)
     private Integer id;
     private String title;
     private Integer userId;

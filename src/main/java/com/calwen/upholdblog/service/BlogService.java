@@ -15,10 +15,9 @@ public interface BlogService {
 
     PageVO<BlogEntity> page(BlogQueryRequest request);
 
-
     Boolean save(BlogRequest request);
 
-    Boolean del(Integer id);
+    Boolean del(Integer id, Integer userId);
 
     Boolean update(BlogRequest request);
 }

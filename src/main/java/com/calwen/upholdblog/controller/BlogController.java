@@ -44,4 +44,9 @@ public class BlogController {
         request.setUserId(JwtUtil.getUid());
         return ResultUtil.autoDo(service.save(request));
     }
+
+    @DeleteMapping("/{id}")
+    public ResultVO<Object> del(@PathVariable Integer id) {
+        return ResultUtil.autoDo(service.del(id,JwtUtil.getUid()));
+    }
 }

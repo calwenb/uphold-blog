@@ -29,5 +29,5 @@ public class BlogQueryRequest {
      */
 //    @NotNull(message = " 分页大小参数 size必传 ")
     @Max(value = 200, message = " 分页大小不可超过200 ")
-    private Integer PageSize;
+    private Integer pageSize;
 }

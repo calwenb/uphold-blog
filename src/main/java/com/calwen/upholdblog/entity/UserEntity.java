@@ -1,7 +1,7 @@
 package com.calwen.upholdblog.entity;
 
+import com.wen.releasedao.core.annotation.ColumnId;
 import com.wen.releasedao.core.annotation.CreateTime;
-import com.wen.releasedao.core.annotation.FieldId;
 import com.wen.releasedao.core.annotation.TableName;
 import com.wen.releasedao.core.annotation.UpdateTime;
 import com.wen.releasedao.core.enums.IdTypeEnum;
@@ -21,7 +21,7 @@ import java.util.Date;
 @NoArgsConstructor
 @TableName("user")
 public class UserEntity {
-    @FieldId(idType = IdTypeEnum.AUTO)
+    @ColumnId(idType = IdTypeEnum.AUTO)
     private Integer id;
     private String name;
     private String account;
