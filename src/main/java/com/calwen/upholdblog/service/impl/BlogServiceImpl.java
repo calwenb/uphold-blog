@@ -9,6 +9,7 @@ import com.calwen.upholdblog.exception.OauthException;
 import com.calwen.upholdblog.request.blog.BlogQueryRequest;
 import com.calwen.upholdblog.request.blog.BlogRequest;
 import com.calwen.upholdblog.service.BlogService;
+import com.calwen.upholdblog.service.TagService;
 import com.calwen.upholdblog.service.UserService;
 import com.calwen.upholdblog.vo.BlogVO;
 import com.wen.releasedao.core.mapper.BaseMapper;
@@ -53,22 +54,26 @@ public class BlogServiceImpl implements BlogService {
         return wrapper;
     }
 
+    @Resource
+    TagService tagService;
+
     @Override
     public Boolean save(BlogRequest request) {
 //        this.verify(request.getId(), request.getUserId());
-        BlogEntity entity = new BlogEntity();
-        BeanUtils.copyProperties(request, entity);
-        entity.setColumnId(0);
-        entity.setTypeId(0);
-        entity.setView(0);
-        entity.setLike(0);
-        entity.setDeleted(false);
-        return baseMapper.add(entity);
+        BlogEntity blog = new BlogEntity();
+        BeanUtils.copyProperties(request, blog);
+        blog.setTypeId(0);
+        blog.setView(0);
+        blog.setLike(0);
+        blog.setDeleted(false);
+        baseMapper.add(blog);
+        tagService.BlogSave(blog.getId(), request.getTagList());
+        return true;
     }
 
     @Override
     public Boolean del(Integer id, Integer userId) {
-        this.verify(id,userId);
+        this.verify(id, userId);
         return baseMapper.deleteById(BlogEntity.class, id);
     }
 

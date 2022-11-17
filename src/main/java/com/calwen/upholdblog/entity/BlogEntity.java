@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author calwen
@@ -21,9 +22,7 @@ public class BlogEntity {
     private Integer id;
     private String title;
     private Integer userId;
-    private Integer columnId;
     private Integer typeId;
-    private String tag;
     private Integer view;
     private Integer like;
     private Boolean open;
@@ -35,4 +34,6 @@ public class BlogEntity {
     private Date createTime;
     @UpdateTime
     private Date updateTime;
+//    @Column(exist = false)
+//    private List<TagEntity> tagList;
 }

@@ -2,6 +2,8 @@ package com.calwen.upholdblog.request.blog;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @author calwen
  * @since 2022/11/5
@@ -12,7 +14,7 @@ public class BlogRequest {
     private String title;
     private Integer userId;
     private String columnName;
-    private String tag;
+    private List<String> tagList;
     private Boolean open;
     private String content;
     private String imgUrl;

@@ -1,5 +1,7 @@
 package com.calwen.upholdblog.service;
 
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -10,6 +12,6 @@ public interface FileService {
 
     String uploadImg(MultipartFile file);
 
-    void getImg(String url);
+    ResponseEntity<FileSystemResource> get(String url);
 
 }

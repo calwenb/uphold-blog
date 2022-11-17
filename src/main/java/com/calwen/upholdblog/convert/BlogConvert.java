@@ -1,17 +1,21 @@
 package com.calwen.upholdblog.convert;
 
 import com.calwen.upholdblog.entity.BlogEntity;
+import com.calwen.upholdblog.entity.TagEntity;
+import com.calwen.upholdblog.service.TagService;
 import com.calwen.upholdblog.service.UserService;
 import com.calwen.upholdblog.vo.BlogVO;
 import com.wen.releasedao.core.vo.PageVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.expression.spel.ast.OpAnd;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -23,17 +27,19 @@ import java.util.stream.Collectors;
 public class BlogConvert {
     @Resource
     UserService userService;
+    @Resource
+    TagService tagService;
 
     public BlogVO convert(BlogEntity entity) {
         BlogVO vo = new BlogVO();
         BeanUtils.copyProperties(entity, vo);
         String userName = userService.getName(entity.getUserId());
         vo.setUserName(userName);
-        if (StringUtils.isNotBlank(entity.getTag())) {
-            String tagStr = entity.getTag();
-            List<String> tagList = Arrays.asList(tagStr.substring(1, tagStr.length() - 1).split(","));
-            vo.setTagList(tagList);
-        }
+        List<String> tagList = tagService.listByBlogId(entity.getId());
+        vo.setTagList(tagList);
+        String content = Optional.ofNullable(entity.getContent()).orElse("");
+        String preview = content.substring(0, Math.min(30, content.length()));
+        vo.setPreview(preview);
         return vo;
     }
 
