@@ -40,3 +40,8 @@ spring:
 releasedao:
   config:
     logger: true
+
+
+uphold-blog:
+  file:
+    baseDir: /wen

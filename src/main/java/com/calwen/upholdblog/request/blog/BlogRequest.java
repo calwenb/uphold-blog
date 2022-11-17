@@ -15,5 +15,6 @@ public class BlogRequest {
     private String tag;
     private Boolean open;
     private String content;
+    private String imgUrl;
     //    private Integer typeId;
 }

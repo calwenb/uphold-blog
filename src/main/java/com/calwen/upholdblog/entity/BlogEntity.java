@@ -28,6 +28,7 @@ public class BlogEntity {
     private Integer like;
     private Boolean open;
     private String content;
+    private String imgUrl;
 //    @FieldValue("")
     private Boolean deleted;
     @CreateTime
