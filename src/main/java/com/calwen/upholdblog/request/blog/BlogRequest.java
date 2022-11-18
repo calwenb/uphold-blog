@@ -13,10 +13,11 @@ public class BlogRequest {
     private Integer id;
     private String title;
     private Integer userId;
-    private String columnName;
+    private String type;
     private List<String> tagList;
     private Boolean open;
     private String content;
     private String imgUrl;
+    private String fileUrl;
     //    private Integer typeId;
 }

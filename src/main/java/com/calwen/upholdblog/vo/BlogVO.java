@@ -25,6 +25,7 @@ public class BlogVO {
     private String content;
     private String imgUrl;
     private String preview;
+    private Boolean edit;
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date createTime;
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")

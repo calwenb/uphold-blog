@@ -2,8 +2,10 @@ package com.calwen.upholdblog.convert;
 
 import com.calwen.upholdblog.entity.BlogEntity;
 import com.calwen.upholdblog.entity.TagEntity;
+import com.calwen.upholdblog.entity.UserEntity;
 import com.calwen.upholdblog.service.TagService;
 import com.calwen.upholdblog.service.UserService;
+import com.calwen.upholdblog.util.JwtUtil;
 import com.calwen.upholdblog.vo.BlogVO;
 import com.wen.releasedao.core.vo.PageVO;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -31,6 +34,9 @@ public class BlogConvert {
     TagService tagService;
 
     public BlogVO convert(BlogEntity entity) {
+        if (entity == null) {
+            return new BlogVO();
+        }
         BlogVO vo = new BlogVO();
         BeanUtils.copyProperties(entity, vo);
         String userName = userService.getName(entity.getUserId());
@@ -40,6 +46,9 @@ public class BlogConvert {
         String content = Optional.ofNullable(entity.getContent()).orElse("");
         String preview = content.substring(0, Math.min(30, content.length()));
         vo.setPreview(preview);
+        if (Objects.equals(entity.getUserId(), JwtUtil.getUid())) {
+            vo.setEdit(true);
+        }
         return vo;
     }
 

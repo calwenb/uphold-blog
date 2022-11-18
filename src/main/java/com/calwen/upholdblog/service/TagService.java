@@ -1,6 +1,6 @@
 package com.calwen.upholdblog.service;
 
-import com.calwen.upholdblog.entity.TagEntity;
+import com.calwen.upholdblog.vo.TagCountVO;
 
 import java.util.List;
 
@@ -11,7 +11,10 @@ import java.util.List;
 public interface TagService {
     List<String> listByBlogId(Integer blogId);
 
-    List<String> listValue();
+    List<String> tagEnum();
 
     boolean BlogSave(Integer blogId,List<String> list);
+
+    List<TagCountVO> tagCount();
+
 }

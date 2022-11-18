@@ -10,8 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface FileService {
 
-    String uploadImg(MultipartFile file);
+    String upload(MultipartFile file);
 
     ResponseEntity<FileSystemResource> get(String url);
 
+    String parsContent(MultipartFile file);
 }

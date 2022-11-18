@@ -3,6 +3,7 @@ package com.calwen.upholdblog.request.blog;
 import lombok.Data;
 
 import javax.validation.constraints.Max;
+import java.util.List;
 
 /**
  * @author calwen
@@ -12,8 +13,8 @@ import javax.validation.constraints.Max;
 public class BlogQueryRequest {
     private String keyword;
     private Integer userId;
-    private String columnName;
-    private String tag;
+    private Integer typeId;
+    private List<String> tagList;
     /**
      * 简单查询
      */

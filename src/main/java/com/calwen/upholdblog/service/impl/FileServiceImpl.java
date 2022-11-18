@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 /**
  * @author calwen
@@ -28,13 +29,13 @@ public class FileServiceImpl implements FileService {
     String baseDir;
 
     @Override
-    public String uploadImg(MultipartFile file) {
+    public String upload(MultipartFile file) {
         try {
-            String fileName = System.currentTimeMillis() + file.getOriginalFilename();
-            String path = baseDir + FileEnum.IMG_DIR.getValue() + fileName;
-//            createFatherDir(path);
+            String resource = System.currentTimeMillis() + file.getOriginalFilename();
+            String path = baseDir + resource;
+            createFatherDir(baseDir);
             file.transferTo(Paths.get(path));
-            return FileEnum.IMG_DIR.getValue() + fileName;
+            return resource;
         } catch (IOException e) {
             e.printStackTrace();
             throw new FailException("上传文件发生错误");
@@ -43,19 +44,28 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public ResponseEntity<FileSystemResource> get(String url) {
-        if (url==null){
+        FileSystemResource file = new FileSystemResource(baseDir + url);
+        if (!file.exists()) {
             return null;
         }
-        FileSystemResource resource = new FileSystemResource(baseDir + url);
-        resource.getFilename();
         String contentDisposition = ContentDisposition
                 .builder("attachment")
-                .filename(resource.getFilename())
+                .filename(Optional.ofNullable(file.getFilename()).orElse("未知文件"))
                 .build().toString();
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
-                .contentType(MediaType.IMAGE_JPEG)
-                .body(new FileSystemResource(baseDir + url));
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(file);
+    }
+
+    @Override
+    public String parsContent(MultipartFile file) {
+        try {
+            byte[] bytes = file.getBytes();
+            return new String(bytes);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void createFatherDir(String path) {

@@ -4,15 +4,18 @@ import com.calwen.upholdblog.convert.BlogConvert;
 import com.calwen.upholdblog.request.blog.BlogQueryRequest;
 import com.calwen.upholdblog.request.blog.BlogRequest;
 import com.calwen.upholdblog.service.BlogService;
+import com.calwen.upholdblog.service.TagService;
 import com.calwen.upholdblog.util.JwtUtil;
 import com.calwen.upholdblog.util.ResultUtil;
 import com.calwen.upholdblog.vo.BlogVO;
 import com.calwen.upholdblog.vo.ResultVO;
+import com.calwen.upholdblog.vo.TagCountVO;
 import com.wen.releasedao.core.vo.PageVO;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author calwen
@@ -26,6 +29,8 @@ public class BlogController {
     BlogService service;
     @Resource
     BlogConvert convert;
+    @Resource
+    TagService tagService;
 
     @GetMapping("/{id}")
     public ResultVO<BlogVO> get(@PathVariable Integer id) {
@@ -47,6 +52,19 @@ public class BlogController {
 
     @DeleteMapping("/{id}")
     public ResultVO<Object> del(@PathVariable Integer id) {
-        return ResultUtil.autoDo(service.del(id,JwtUtil.getUid()));
+        return ResultUtil.autoDo(service.del(id, JwtUtil.getUid()));
+    }
+
+    @GetMapping("/tag/enum")
+    public ResultVO<List<String>> tagEnum() {
+        List<String> data = tagService.tagEnum();
+        return ResultUtil.success(data);
+    }
+
+    @GetMapping("/tag/count")
+    public ResultVO<List<TagCountVO>> tagCount() {
+        List<TagCountVO> data = tagService.tagCount();
+        return ResultUtil.success(data);
     }
 }
+

@@ -19,5 +19,5 @@ public interface BlogService {
 
     Boolean del(Integer id, Integer userId);
 
-    Boolean update(BlogRequest request);
+    Boolean saveByFile(BlogRequest request);
 }

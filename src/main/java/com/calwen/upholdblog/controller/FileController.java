@@ -22,18 +22,23 @@ public class FileController {
     FileService service;
 
     @PassAuth
-    @PostMapping("/upload-img")
+    @PostMapping("/upload")
     public ResultVO<String> upload(MultipartFile file) {
-        String data = service.uploadImg(file);
+        String data = service.upload(file);
         return ResultUtil.success(data);
     }
 
     @PassAuth
-    @GetMapping
-    public ResponseEntity<FileSystemResource> get(String url) {
+    @GetMapping("/{url}")
+    public ResponseEntity<FileSystemResource> get(@PathVariable String url) {
         return service.get(url);
+    }
 
-
+    @PassAuth
+    @PostMapping("/pars-content")
+    public ResultVO<String> parsContent(MultipartFile file) {
+        String data = service.parsContent(file);
+        return ResultUtil.success(data);
     }
 
 }
