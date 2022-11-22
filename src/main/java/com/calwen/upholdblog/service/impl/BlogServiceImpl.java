@@ -1,6 +1,5 @@
 package com.calwen.upholdblog.service.impl;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -63,12 +62,13 @@ public class BlogServiceImpl implements BlogService {
             wrapper.like("title", keyword);
         }
         if (tagList != null && !tagList.isEmpty()) {
-            for (String tag : tagList) {
-                wrapper.eq("tag", tag);
-            }
+            Object[] ids = tagService.listByValues(tagList).stream()
+                    .map(TagEntity::getBlogId)
+                    .toArray();
+            wrapper.in("id", ids);
         }
         if (typeId != null) {
-            wrapper.eq("typeId", typeId);
+            wrapper.eq("type_id", typeId);
         }
         wrapper.orderDesc("update_time");
         return wrapper;
@@ -86,7 +86,7 @@ public class BlogServiceImpl implements BlogService {
         blog.setUpdateTime(new Date());
         blog.setDeleted(false);
         baseMapper.save(blog);
-        tagService.BlogSave(blog.getId(), request.getTagList());
+        tagService.blogSave(blog.getId(), request.getTagList());
         return true;
     }
 

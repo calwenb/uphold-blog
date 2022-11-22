@@ -21,9 +21,9 @@ public class TypeEntity {
     private Integer id;
     private String value;
 
-    @Column(defaultValue = "true")
+//    @Column(defaultValue = "true")
     private Boolean open;
-    @Column(defaultValue = "false")
+//    @Column(defaultValue = "false")
     private Boolean deleted;
     @CreateTime
     private Date createTime;

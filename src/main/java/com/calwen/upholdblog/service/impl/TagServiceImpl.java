@@ -30,13 +30,25 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    public List<TagEntity> listByValues(List<String> values) {
+        if (values != null && !values.isEmpty()) {
+            QueryWrapper wrapper = new QueryWrapper();
+            for (String value : values) {
+                wrapper.eq("value", value);
+            }
+            return baseMapper.getList(TagEntity.class, wrapper);
+        }
+        return null;
+    }
+
+    @Override
     public List<String> tagEnum() {
         List<TagEntity> list = baseMapper.getList(TagEntity.class);
         return list.stream().map(TagEntity::getValue).distinct().collect(Collectors.toList());
     }
 
     @Override
-    public boolean BlogSave(Integer blogId, List<String> list) {
+    public boolean blogSave(Integer blogId, List<String> list) {
         baseMapper.delete(TagEntity.class, new QueryWrapper().eq("blog_id", blogId));
         List<TagEntity> entityList = list.stream().map(e -> {
             TagEntity entity = new TagEntity();
