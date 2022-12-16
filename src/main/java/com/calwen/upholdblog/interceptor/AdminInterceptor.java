@@ -1,7 +1,10 @@
 package com.calwen.upholdblog.interceptor;
 
 import com.alibaba.fastjson2.JSON;
+import com.calwen.upholdblog.annotation.AdminAuth;
 import com.calwen.upholdblog.annotation.PassAuth;
+import com.calwen.upholdblog.entity.UserEntity;
+import com.calwen.upholdblog.enums.UserTypeEnum;
 import com.calwen.upholdblog.service.AuthService;
 import com.calwen.upholdblog.util.LoggerUtil;
 import com.calwen.upholdblog.util.ResultUtil;
@@ -13,6 +16,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -23,40 +28,30 @@ import java.util.concurrent.TimeUnit;
  *
  * @author calwen
  */
-public class AuthenticationInterceptor implements HandlerInterceptor {
+public class AdminInterceptor implements HandlerInterceptor {
 
     @Resource
     AuthService authService;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object object) throws Exception {
         response.setContentType("application/json;charset=UTF-8");
-        // 如果不是映射到方法直接通过
         if (!(object instanceof HandlerMethod)) {
             return true;
         }
 
         HandlerMethod handlerMethod = (HandlerMethod) object;
         Method method = handlerMethod.getMethod();
-        if (method.isAnnotationPresent(PassAuth.class)) {
-            PassAuth passAuth = method.getAnnotation(PassAuth.class);
-            if (passAuth.required()) {
-                return true;
+        if (method.isAnnotationPresent(AdminAuth.class)) {
+            AdminAuth adminAuth = method.getAnnotation(AdminAuth.class);
+            if (adminAuth.required() &&
+                    !UserTypeEnum.ADMIN.name().equals(authService.getUser().getType())) {
+                ResultVO<String> resultVO = ResultUtil.noPower();
+                response.getWriter().println(JSON.toJSONString(resultVO));
+                return false;
             }
         }
-        try {
-            // 执行认证,redis中若有此token，则放行
-            if (authService.verifyToken()) {
-                if (authService.getExpireTime() < TimeUnit.HOURS.toSeconds(1)) {
-                    authService.renew(2);
-                }
-                return true;
-            }
-        } catch (Exception e) {
-            LoggerUtil.warn(e.getMessage(), AuthenticationInterceptor.class);
-        }
-        ResultVO<String> resultVO = ResultUtil.unauthorized();
-        response.getWriter().println(JSON.toJSONString(resultVO));
-        return false;
+        return true;
     }
 
 }

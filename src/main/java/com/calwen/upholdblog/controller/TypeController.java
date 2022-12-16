@@ -1,7 +1,7 @@
 package com.calwen.upholdblog.controller;
 
+import com.calwen.upholdblog.annotation.AdminAuth;
 import com.calwen.upholdblog.convert.TypeConvert;
-import com.calwen.upholdblog.entity.TypeEntity;
 import com.calwen.upholdblog.request.blog.TypeRequest;
 import com.calwen.upholdblog.service.TypeService;
 import com.calwen.upholdblog.util.ResultUtil;
@@ -30,12 +30,14 @@ public class TypeController {
         return ResultUtil.success(data);
     }
 
+    @AdminAuth
     @PostMapping
     public ResultVO<Object> save(@RequestBody TypeRequest request) {
         boolean b = typeService.save(request);
         return ResultUtil.autoDo(b);
     }
 
+    @AdminAuth
     @DeleteMapping("/{id}")
     public ResultVO<Object> del(@PathVariable Integer id) {
         boolean b = typeService.del(id);

@@ -28,7 +28,7 @@ public class BlogEntity {
     private Boolean open;
     private String content;
     private String imgUrl;
-//    @FieldValue("")
+    @Column(defaultValue = "true")
     private Boolean deleted;
     @CreateTime
     private Date createTime;

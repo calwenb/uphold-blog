@@ -1,5 +1,6 @@
 package com.calwen.upholdblog.request.blog;
 
+import com.calwen.upholdblog.request.PageRequest;
 import lombok.Data;
 
 import javax.validation.constraints.Max;
@@ -10,7 +11,7 @@ import java.util.List;
  * @since 2022/11/5
  */
 @Data
-public class BlogQueryRequest {
+public class BlogQueryRequest extends PageRequest {
     private String keyword;
     private Integer userId;
     private Integer typeId;
@@ -19,16 +20,5 @@ public class BlogQueryRequest {
      * 简单查询
      */
     private boolean simple;
-    /**
-     * 分页页码
-     */
-//    @NotNull(message = " 分页页码参数 page必传 ")
-    private Integer pageNum;
 
-    /**
-     * 分页大小
-     */
-//    @NotNull(message = " 分页大小参数 size必传 ")
-    @Max(value = 200, message = " 分页大小不可超过200 ")
-    private Integer pageSize;
 }

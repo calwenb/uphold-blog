@@ -99,7 +99,8 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public UserEntity getUser() {
         Integer userId = this.getUserId();
-        UserEntity user = baseMapper.getById(UserEntity.class, userId);
+        UserEntity user = Optional.ofNullable(baseMapper.getById(UserEntity.class, userId))
+                .orElseThrow(() -> new FailException("用户不存在"));
         user.setPassword(null);
         return user;
     }

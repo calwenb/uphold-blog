@@ -1,5 +1,6 @@
 package com.calwen.upholdblog.controller;
 
+import com.calwen.upholdblog.annotation.AdminAuth;
 import com.calwen.upholdblog.convert.BlogConvert;
 import com.calwen.upholdblog.request.blog.BlogQueryRequest;
 import com.calwen.upholdblog.request.blog.BlogRequest;
@@ -44,12 +45,14 @@ public class BlogController {
         return ResultUtil.success(data);
     }
 
+    @AdminAuth
     @PostMapping
     public ResultVO<Object> save(@Valid @RequestBody BlogRequest request) {
         request.setUserId(JwtUtil.getUid());
         return ResultUtil.autoDo(service.save(request));
     }
 
+    @AdminAuth
     @DeleteMapping("/{id}")
     public ResultVO<Object> del(@PathVariable Integer id) {
         return ResultUtil.autoDo(service.del(id, JwtUtil.getUid()));

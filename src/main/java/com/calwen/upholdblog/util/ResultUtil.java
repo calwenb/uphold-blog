@@ -61,6 +61,9 @@ public class ResultUtil {
         return buildErrorVO(ResultEnum.BAD_REQUEST.getCode(), msg);
     }
 
+    public static <T> ResultVO<T> noPower() {
+        return buildErrorVO(ResultEnum.NO_POWER.getCode(), ResultEnum.NO_POWER.getMessage());
+    }
     public static <T> ResultVO<T> unauthorized() {
         return buildErrorVO(ResultEnum.UNAUTHORIZED.getCode(), ResultEnum.UNAUTHORIZED.getMessage());
     }
