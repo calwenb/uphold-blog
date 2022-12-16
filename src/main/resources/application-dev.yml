@@ -42,9 +42,9 @@ spring:
 
 
 
-releasedao:
-  config:
-    logger: true
+#releasedao:
+#  config:
+#    logger: true
 
 
 uphold-blog:

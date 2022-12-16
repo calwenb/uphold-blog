@@ -30,8 +30,9 @@ public class TypeServiceImpl implements TypeService {
     public boolean save(TypeRequest request) {
         TypeEntity entity = new TypeEntity();
         BeanUtils.copyProperties(request, entity);
+        entity.setDeleted(false);
         entity.setCreateTime(new Date());
-        return false;
+        return baseMapper.save(entity);
     }
 
     @Override
