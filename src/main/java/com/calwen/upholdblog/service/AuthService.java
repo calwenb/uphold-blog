@@ -15,6 +15,8 @@ public interface AuthService {
      */
     String login(UserRequest request);
 
+    String freeLogin();
+
     /**
      * 注册
      *
@@ -37,6 +39,5 @@ public interface AuthService {
     Long getExpireTime();
 
     void renew(Integer hour);
-
 
 }

@@ -3,7 +3,6 @@ package com.calwen.upholdblog.request.blog;
 import com.calwen.upholdblog.request.PageRequest;
 import lombok.Data;
 
-import javax.validation.constraints.Max;
 import java.util.List;
 
 /**

@@ -2,10 +2,10 @@ package com.calwen.upholdblog.controller;
 
 import com.calwen.upholdblog.annotation.PassAuth;
 import com.calwen.upholdblog.entity.UserEntity;
-import com.calwen.upholdblog.vo.ResultVO;
 import com.calwen.upholdblog.request.UserRequest;
 import com.calwen.upholdblog.service.AuthService;
 import com.calwen.upholdblog.util.ResultUtil;
+import com.calwen.upholdblog.vo.ResultVO;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +28,12 @@ public class AuthController {
         String token = authService.login(request);
         return ResultUtil.success(token);
     }
+    @PassAuth
+    @PostMapping("/freeLogin")
+    public ResultVO<String> freeLogin() {
+        String token = authService.freeLogin();
+        return ResultUtil.success(token);
+    }
 
     @PassAuth
     @PostMapping("/register")
@@ -48,4 +54,5 @@ public class AuthController {
         UserEntity user = authService.getUser();
         return ResultUtil.success(user);
     }
+
 }

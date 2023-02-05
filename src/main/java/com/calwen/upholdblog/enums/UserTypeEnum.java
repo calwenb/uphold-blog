@@ -5,6 +5,7 @@ package com.calwen.upholdblog.enums;
  * @since 2022/10/29
  */
 public enum UserTypeEnum {
+    VISITOR,
     USER,
     ADMIN,
     SUPER_ADMIN;

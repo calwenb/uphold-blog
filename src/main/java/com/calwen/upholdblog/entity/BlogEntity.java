@@ -23,7 +23,9 @@ public class BlogEntity {
     private String title;
     private Integer userId;
     private Integer typeId;
+    @Column(defaultValue = "0")
     private Integer view;
+    @Column(defaultValue = "0")
     private Integer like;
     private Boolean open;
     private String content;

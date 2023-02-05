@@ -1,5 +1,5 @@
 server:
-  port: 3964
+  port: 3966
   servlet:
     context-path: /api
 
@@ -9,7 +9,7 @@ spring:
       max-file-size: 100MB
       max-request-size: 100MB
   datasource:
-    url: jdbc:mysql://1.117.95.71:3306/uphold_blog_dev?serverTimezone=Hongkong&useAffectedRows=true
+    url: jdbc:mysql://1.117.95.71:3306/uphold_blog?serverTimezone=Hongkong&useAffectedRows=true
     username: root
     password: WHL123456
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -40,12 +40,6 @@ spring:
         max-idle: 8
         min-idle: 0
 
-
-
-#releasedao:
-#  config:
-#    logger: true
-
 uphold-blog:
   file:
-    baseDir: D:\project-support\uphold-blog\file\
+    baseDir: /wen/project-support/file/img/

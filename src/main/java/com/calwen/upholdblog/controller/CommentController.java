@@ -3,17 +3,14 @@ package com.calwen.upholdblog.controller;
 import com.calwen.upholdblog.annotation.AdminAuth;
 import com.calwen.upholdblog.entity.CommentEntity;
 import com.calwen.upholdblog.request.CommentQueryRequest;
-import com.calwen.upholdblog.request.blog.TypeRequest;
 import com.calwen.upholdblog.service.CommentService;
 import com.calwen.upholdblog.util.JwtUtil;
 import com.calwen.upholdblog.util.ResultUtil;
 import com.calwen.upholdblog.vo.ResultVO;
-import com.calwen.upholdblog.vo.TypeVO;
 import com.wen.releasedao.core.vo.PageVO;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author calwen
@@ -21,7 +18,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/comments")
-public class commentController {
+public class CommentController {
     @Resource
     CommentService service;
 
@@ -37,4 +34,5 @@ public class commentController {
         boolean b = service.save(content, JwtUtil.getUid());
         return ResultUtil.autoDo(b);
     }
+
 }

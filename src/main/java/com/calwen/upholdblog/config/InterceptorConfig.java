@@ -30,7 +30,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //验证拦截
-//        registry.addInterceptor(authenticationInterceptor());
+        registry.addInterceptor(authenticationInterceptor());
         registry.addInterceptor(adminInterceptor());
     }
 

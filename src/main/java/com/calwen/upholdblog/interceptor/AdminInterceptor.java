@@ -44,8 +44,7 @@ public class AdminInterceptor implements HandlerInterceptor {
         Method method = handlerMethod.getMethod();
         if (method.isAnnotationPresent(AdminAuth.class)) {
             AdminAuth adminAuth = method.getAnnotation(AdminAuth.class);
-            if (adminAuth.required() &&
-                    !UserTypeEnum.ADMIN.name().equals(authService.getUser().getType())) {
+            if (adminAuth.value() && !UserTypeEnum.ADMIN.name().equals(authService.getUser().getType())) {
                 ResultVO<String> resultVO = ResultUtil.noPower();
                 response.getWriter().println(JSON.toJSONString(resultVO));
                 return false;

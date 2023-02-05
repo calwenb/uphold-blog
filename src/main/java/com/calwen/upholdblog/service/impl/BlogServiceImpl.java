@@ -76,7 +76,7 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public Boolean save(BlogRequest request) {
-//      this.verify(request.getId(), request.getUserId());
+      this.verify(request.getId(), request.getUserId());
         BlogEntity blog = new BlogEntity();
         BeanUtils.copyProperties(request, blog);
         blog.setTypeId(0);

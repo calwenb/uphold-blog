@@ -31,6 +31,11 @@ public class commentServiceImpl implements CommentService {
     }
 
     @Override
+    public boolean save(String content, Integer userId) {
+        return false;
+    }
+
+    @Override
     public boolean del(Integer id) {
         return false;
     }

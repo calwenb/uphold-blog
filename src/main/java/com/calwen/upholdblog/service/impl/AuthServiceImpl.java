@@ -1,6 +1,7 @@
 package com.calwen.upholdblog.service.impl;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.IdUtil;
 import com.calwen.upholdblog.entity.UserEntity;
 import com.calwen.upholdblog.enums.RedisEnum;
 import com.calwen.upholdblog.enums.TokenEnum;
@@ -51,18 +52,33 @@ public class AuthServiceImpl implements AuthService {
 
         //记住密码给30天，否则12小时
         if (Objects.equals(request.getRemember(), true)) {
-            return TokenEnum.TOKEN_PREFIX.getValue() +
-                    saveToken(user.getId(), user.getType(), 30 * 24);
+            return  saveToken(user.getId(), user.getType(), 30 * 24);
         } else {
-            return TokenEnum.TOKEN_PREFIX.getValue() +
-                    saveToken(user.getId(), user.getType(), 12);
+            return  saveToken(user.getId(), user.getType(), 12);
         }
     }
 
     @Override
+    public String freeLogin() {
+        QueryWrapper wrapper = new QueryWrapper().eq("account", "visitor");
+        UserEntity user = baseMapper.get(UserEntity.class, wrapper);
+        if (Objects.isNull(user)) {
+            user = new UserEntity();
+            user.setName("游客访问");
+            user.setAccount("visitor");
+            user.setPassword(IdUtil.fastSimpleUUID());
+            user.setType(UserTypeEnum.VISITOR.name());
+            user.setDeleted(false);
+            if (!baseMapper.add(user)) {
+                throw new FailException("游客登录失败");
+            }
+        }
+        return saveToken(user.getId(), user.getType(), 12);
+    }
+
+    @Override
     public String register(UserRequest request) {
-        QueryWrapper wrapper = new QueryWrapper()
-                .eq("account", request.getAccount());
+        QueryWrapper wrapper = new QueryWrapper().eq("account", request.getAccount());
         if (baseMapper.get(UserEntity.class, wrapper) != null) {
             throw new FailException("注册失败，账号已存在");
         }
@@ -79,14 +95,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String createToken(Integer uid) {
-        Claims claims = Jwts.claims()
-                .setId(String.valueOf(uid))
-                .setIssuedAt(new Date())
-                .setExpiration(DateUtil.offsetDay(new Date(), 7));
-        return Jwts.builder()
-                .setClaims(claims)
-                .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
-                .compact();
+        Claims claims = Jwts.claims().setId(String.valueOf(uid)).setIssuedAt(new Date()).setExpiration(DateUtil.offsetDay(new Date(), 7));
+        return Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS512, JWT_SECRET).compact();
     }
 
     @Override
@@ -99,8 +109,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public UserEntity getUser() {
         Integer userId = this.getUserId();
-        UserEntity user = Optional.ofNullable(baseMapper.getById(UserEntity.class, userId))
-                .orElseThrow(() -> new FailException("用户不存在"));
+        UserEntity user = Optional.ofNullable(baseMapper.getById(UserEntity.class, userId)).orElseThrow(() -> new FailException("用户不存在"));
         user.setPassword(null);
         return user;
     }
@@ -115,8 +124,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public boolean removeToken() {
         String token = this.getHeaderToken();
-        return Optional.ofNullable(redisTemplate.delete(TOKEN_PREFIX + token))
-                .orElse(false);
+        return Optional.ofNullable(redisTemplate.delete(TOKEN_PREFIX + token)).orElse(false);
     }
 
     @Override
@@ -139,15 +147,11 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private Claims getClaimsFromToken(String token) {
-        return Jwts.parser()
-                .setSigningKey(JWT_SECRET)
-                .parseClaimsJws(token)
-                .getBody();
+        return Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token).getBody();
     }
 
     private String getHeaderToken() {
-        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder
-                .getRequestAttributes();
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes == null ? null : requestAttributes.getRequest();
         if (request == null) {
             throw new OauthException("验证失败");
